@@ -1,23 +1,24 @@
 import argparse
+from pathlib import Path
+from sys import exit
+
+
+def parse_arguments() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="")
+    parser.add_argument("directories", type=Path, help="Root directories to search")
+    parser.add_argument("-a", "--additional", type=Path, nargs="+", help="Additional path patterns to remove")
+
+    verbosity = parser.add_mutually_exclusive_group()
+    verbosity.add_argument("-q", "--quiet", type=bool, default=False, help="Be quiet")
+    verbosity.add_argument("-v", "--verbose", type=bool, default=False, help="Be more verbose")
+
+    return parser.parse_args()
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="")
-    parser.add_argument("pos", type=str, help="The positional arg")
-    parser.add_argument("-f", "--flag1", type=int, default=0, help="This is the first flag")
-    parser.add_argument("-p", "--progress", type=bool, default=True, help="Display progress")
-    parser.add_argument("-v", "--verbose", type=bool, default=False, help="Display error statements")
+    args = parse_arguments()
 
-    args = parser.parse_args()
-
-    try:
-        print(args.pos)
-        print(f"The first flag is {args.flag1}")
-        if args.verbose:
-            print("Some more info")
-    except KeyboardInterrupt:
-        print("Terminated.")
-        return 1
+    # TODO
 
     return 0
 
