@@ -1,23 +1,38 @@
-"""A one line summary of the module or program, terminated by a period.
-
-Leave one blank line.  The rest of this docstring should contain an
-overall description of the module or program.  Optionally, it may also
-contain a brief description of exported classes and functions and/or usage
-examples.
-
-Typical usage example:
-
-```python
-foo = ClassFoo()
-bar = foo.FunctionBar()
-```
-"""
+import shutil
+from pathlib import Path
 
 
-def repeat_string(s: str, n: int) -> str:
-    """Repeat a string an integer number of times!"""
+def remove_file(file: Path) -> None:
+    """Remove a file
 
-    return s * n
+    Args:
+        path (Path): The path to the file
+    """
+    if file.exists():
+        file.unlink()
 
 
-__all__ = ["repeat_string"]
+def remove_directory(directory: Path) -> None:
+    """Remove a directory
+
+    Args:
+        path (Path): The path to the directory
+    """
+    if directory.exists():
+        shutil.rmtree(directory)
+
+
+def remove(path: Path) -> None:
+    """Remove a file or directory
+
+    Args:
+        path (Path): The path to the file or directory
+    """
+    if path.exists():
+        if path.is_dir():
+            remove_directory(path)
+        else:
+            remove_file(path)
+
+
+__all__ = ["remove", "remove_file", "remove_directory"]
