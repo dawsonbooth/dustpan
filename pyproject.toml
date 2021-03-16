@@ -39,6 +39,12 @@ pyclean = "^2.0.0"
 pytest = "^6.2.1"
 rope = "^0.18.0"
 
+[tool.dustpan]
+directories = ["."]
+verbose = true
+additional = [".mypy_cache"]
+protect = ["*.pyc"]
+
 [tool.isort]
 line_length = 119
 profile = "black"
