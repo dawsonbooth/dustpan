@@ -1,10 +1,7 @@
 from sys import exit
 
-from .config import get_configuration
-
 
 def main() -> int:
-    config = get_configuration()
 
     # TODO
 
