@@ -3,9 +3,12 @@ from __future__ import annotations
 import argparse
 import enum
 from pathlib import Path
-from typing import Set
+from typing import Iterable, Set
 
-DEFAULT_PATTERNS = {"**/*.pyc"}
+import toml
+
+DEFAULT_PATTERNS = {"*.pyc"}
+CWD = Path.cwd()
 
 
 class Verbosity(enum.Enum):
@@ -16,25 +19,36 @@ class Verbosity(enum.Enum):
 
 class Configuration:
     directories: Set[Path]
-    patterns: Set[Path]
-    verbosity: Verbosity
+    additional: Set[str]
+    protect: Set[str]
+    quiet: bool
+    verbose: bool
 
     def __init__(
         self,
-        directories: Set[Path],
-        additional: Set[Path] = set(),
-        protect: Set[Path] = set(),
+        directories: Iterable[Path] = {CWD},
+        additional: Iterable[str] = set(),
+        protect: Iterable[str] = set(),
         quiet: bool = False,
         verbose: bool = False,
     ) -> None:
-        self.directories = set(map(lambda p: p.resolve(), directories))
-        self.patterns = (DEFAULT_PATTERNS | additional) - protect
+        self.directories = set(map(lambda p: Path(p).resolve(), directories))
+        self.additional = set(additional)
+        self.protect = set(protect)
+        self.quiet = quiet
+        self.verbose = verbose
 
-        self.verbosity = Verbosity.NORMAL
-        if quiet:
-            self.verbosity = Verbosity.QUIET
-        elif verbose:
-            self.verbosity = Verbosity.VERBOSE
+    @property
+    def verbosity(self) -> Verbosity:
+        if self.quiet:
+            return Verbosity.QUIET
+        elif self.verbose:
+            return Verbosity.VERBOSE
+        return Verbosity.NORMAL
+
+    @property
+    def patterns(self) -> Set[Path]:
+        return (DEFAULT_PATTERNS | self.additional) - self.protect
 
     def __or__(self, o: Configuration) -> Configuration:
         self.__dict__.update(o.__dict__)
@@ -42,14 +56,14 @@ class Configuration:
 
 
 def parse_pyproject() -> Configuration:
-    # TODO
-    return Configuration({Path.cwd()})
+    pyproject = toml.load(CWD / "pyproject.toml")
+
+    return Configuration(**pyproject["tool"]["dustpan"])
 
 
 def parse_arguments() -> Configuration:
-
     parser = argparse.ArgumentParser(description="")
-    parser.add_argument("directories", type=Path, nargs="+", default=[Path.cwd()], help="Root directories to search")
+    parser.add_argument("directories", type=Path, nargs="+", default=[CWD], help="Root directories to search")
     parser.add_argument(
         "-a", "--additional", type=str, nargs="+", default=[], help="Additional path patterns for removal"
     )
@@ -63,7 +77,7 @@ def parse_arguments() -> Configuration:
 
     args = parser.parse_args()
 
-    return Configuration(set(args.directories), set(args.additional), set(args.protect), args.quiet, args.verbose)
+    return Configuration(**vars(args))
 
 
 def get_configuration() -> Configuration:
