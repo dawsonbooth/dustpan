@@ -24,7 +24,6 @@ dustpan = "dustpan.__main__:main"
 [tool.poetry.dependencies]
 python = "^3.7"
 toml = "^0.10.2"
-tqdm = "^4.59.0"
 
 [tool.poetry.dev-dependencies]
 autoflake = "^1.4"
@@ -40,10 +39,7 @@ pytest = "^6.2.1"
 rope = "^0.18.0"
 
 [tool.dustpan]
-directories = ["."]
-verbose = true
-include = ["test.txt"]
-exclude = ["*.pyc"]
+patterns = ["test.txt"]
 
 [tool.isort]
 line_length = 119
