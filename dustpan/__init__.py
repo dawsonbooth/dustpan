@@ -41,8 +41,17 @@ def remove(path: Path) -> None:
 
 
 def search(
-    directories: Iterable[Path], patterns: Iterable[str] = DEFAULT_PATTERNS, ignore: Iterable[str] = DEFAULT_IGNORE
+    *directories: Path, patterns: Iterable[str] = DEFAULT_PATTERNS, ignore: Iterable[str] = DEFAULT_IGNORE
 ) -> Set[Path]:
+    """Search for path patterns within directories
+
+    Args:
+        patterns (Iterable[str], optional): Patterns to glob recursively. Defaults to DEFAULT_PATTERNS.
+        ignore (Iterable[str], optional): Patterns to ignore. Defaults to DEFAULT_IGNORE.
+
+    Returns:
+        Set[Path]: [description]
+    """
     paths = set()
     for directory in directories:
         for pattern in patterns:
@@ -58,4 +67,4 @@ def search(
     return paths
 
 
-__all__ = ["remove", "remove_file", "remove_directory"]
+__all__ = ["remove", "remove_file", "remove_directory", "search"]
