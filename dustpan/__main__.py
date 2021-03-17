@@ -1,7 +1,13 @@
 from sys import exit
 
+from colorama import Style
+
 from . import remove
 from .config import CONFIG
+
+
+def print_verbose(message: str, *args, **kwargs) -> None:
+    print(f"{Style.DIM}{message}{Style.RESET_ALL}", *args, **kwargs)
 
 
 def main() -> int:
@@ -12,19 +18,19 @@ def main() -> int:
                 if path.exists():
                     paths.add(path)
                     if CONFIG.verbose:
-                        print(f"Found: {path}")
+                        print_verbose(f"Found: {path}")
 
         for pattern in CONFIG.ignore:
             for path in directory.rglob(pattern):
                 if path in paths:
                     paths.remove(path)
                 if CONFIG.verbose:
-                    print(f"Ignored: {path}")  # TODO: Print muted
+                    print_verbose(f"Ignored: {path}")
 
     for path in paths:
         remove(path)
         if CONFIG.verbose:
-            print(f"Removing: {path}")
+            print_verbose(f"Removing: {path}")
 
     # TODO: Optionally remove all blank directories
 

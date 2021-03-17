@@ -24,6 +24,7 @@ dustpan = "dustpan.__main__:main"
 [tool.poetry.dependencies]
 python = "^3.7"
 toml = "^0.10.2"
+colorama = "^0.4.4"
 
 [tool.poetry.dev-dependencies]
 autoflake = "^1.4"
