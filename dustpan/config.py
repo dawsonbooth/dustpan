@@ -6,10 +6,6 @@ from typing import Iterable, Set
 
 import toml
 
-# TODO: Refine these
-DEFAULT_PATTERNS = {"__pycache__", "*.pyc", ".mypy_cache", ".pytest_cache"}
-DEFAULT_IGNORE = {".venv/**/*"}
-
 CWD = Path.cwd()
 
 
@@ -29,7 +25,7 @@ class Configuration:
         verbose: bool = False,
     ) -> None:
         self.directories = set(map(lambda p: Path(p).resolve(), directories))
-        self.patterns = set(patterns) | DEFAULT_PATTERNS
+        self.patterns = set(patterns)
         self.ignore = set(ignore)
         self.patterns -= self.ignore
         self.quiet = quiet

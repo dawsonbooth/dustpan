@@ -1,5 +1,10 @@
 import shutil
 from pathlib import Path
+from typing import Iterable, Set
+
+# TODO: Refine these
+DEFAULT_PATTERNS = {"__pycache__", "*.pyc", ".mypy_cache", ".pytest_cache"}
+DEFAULT_IGNORE = {".venv/**/*"}
 
 
 def remove_file(file: Path) -> None:
@@ -33,6 +38,24 @@ def remove(path: Path) -> None:
             remove_directory(path)
         else:
             remove_file(path)
+
+
+def search(
+    directories: Iterable[Path], patterns: Iterable[str] = DEFAULT_PATTERNS, ignore: Iterable[str] = DEFAULT_IGNORE
+) -> Set[Path]:
+    paths = set()
+    for directory in directories:
+        for pattern in patterns:
+            for path in directory.rglob(pattern):
+                if path.exists():
+                    paths.add(path)
+
+        for pattern in ignore:
+            for path in directory.rglob(pattern):
+                if path in paths:
+                    paths.remove(path)
+
+    return paths
 
 
 __all__ = ["remove", "remove_file", "remove_directory"]
