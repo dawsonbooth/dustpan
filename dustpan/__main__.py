@@ -5,7 +5,7 @@ from typing import Iterable, Set
 
 from colorama import Style
 
-from . import DEFAULT_IGNORE, DEFAULT_PATTERNS, remove, search
+from . import DEFAULT_EXCLUDE, DEFAULT_INCLUDE, remove, search
 from .config import CONFIG
 
 
@@ -33,7 +33,7 @@ def paths_to_remove(patterns: Iterable[str], ignore: Iterable[str]) -> Set[Path]
 
 def empty_directories() -> Set[Path]:
     paths = set()
-    for path in search(*CONFIG.directories, patterns=["*"], ignore=DEFAULT_IGNORE | CONFIG.ignore):
+    for path in search(*CONFIG.directories, patterns=["*"], ignore=DEFAULT_EXCLUDE | CONFIG.exclude):
         if path.exists() and path.is_dir():
             with os.scandir(path) as scan:
                 if next(scan, None) is None:
@@ -56,10 +56,10 @@ def main() -> int:
     paths = set()
 
     output("Default search...", verbose=True)
-    paths |= paths_to_remove(DEFAULT_PATTERNS, DEFAULT_IGNORE)
+    paths |= paths_to_remove(DEFAULT_INCLUDE, DEFAULT_EXCLUDE)
 
     output("Custom search...", verbose=True)
-    paths |= paths_to_remove(CONFIG.patterns, CONFIG.ignore)
+    paths |= paths_to_remove(CONFIG.include, CONFIG.exclude)
 
     output("Removing paths...", verbose=True)
     num_removed += remove_paths(paths)

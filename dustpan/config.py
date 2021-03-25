@@ -17,8 +17,8 @@ def _set_of_paths(paths: Iterable[str]) -> Set[Path]:
 @attr.s
 class Configuration:
     directories: Set[Path] = attr.ib(default={CWD}, converter=_set_of_paths)
-    patterns: Set[str] = attr.ib(default=set(), converter=set)
-    ignore: Set[str] = attr.ib(default=set(), converter=set)
+    include: Set[str] = attr.ib(default=set(), converter=set)
+    exclude: Set[str] = attr.ib(default=set(), converter=set)
     remove_empty_directories: bool = attr.ib(default=False)
     quiet: bool = attr.ib(default=False)
     verbose: bool = attr.ib(default=False)

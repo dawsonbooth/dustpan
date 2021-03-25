@@ -41,7 +41,7 @@ pytest = "^6.2.1"
 rope = "^0.18.0"
 
 [tool.dustpan]
-patterns = ["test.txt"]
+include = ["test.txt"]
 remove-empty-directories = true
 
 [tool.isort]

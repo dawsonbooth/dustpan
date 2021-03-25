@@ -3,8 +3,8 @@ from pathlib import Path
 from typing import Iterable, Set
 
 # TODO: Refine these
-DEFAULT_PATTERNS = {"__pycache__", "*.pyc", ".mypy_cache", ".pytest_cache"}
-DEFAULT_IGNORE = {".venv/**/*"}
+DEFAULT_INCLUDE = {"__pycache__", "*.pyc", ".mypy_cache", ".pytest_cache"}
+DEFAULT_EXCLUDE = {".venv/**/*"}
 
 
 def remove_file(file: Path) -> None:
@@ -41,7 +41,7 @@ def remove(path: Path) -> None:
 
 
 def search(
-    *directories: Path, patterns: Iterable[str] = DEFAULT_PATTERNS, ignore: Iterable[str] = DEFAULT_IGNORE
+    *directories: Path, patterns: Iterable[str] = DEFAULT_INCLUDE, ignore: Iterable[str] = DEFAULT_EXCLUDE
 ) -> Set[Path]:
     """Search for path patterns within directories
 
