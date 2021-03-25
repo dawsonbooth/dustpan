@@ -4,45 +4,30 @@ import argparse
 from pathlib import Path
 from typing import Iterable, Set
 
+import attr
 import toml
 
 CWD = Path.cwd()
 
 
+def _set_of_paths(paths: Iterable[str]) -> Set[Path]:
+    return set(map(lambda p: Path(p).resolve(), paths))
+
+
+@attr.s
 class Configuration:
-    directories: Set[Path]
-    patterns: Set[str]
-    ignore: Set[str]
-    remove_empty_directories: bool
-    quiet: bool
-    verbose: bool
-
-    def __init__(
-        self,
-        directories: Iterable[Path] = {CWD},
-        patterns: Iterable[str] = set(),
-        ignore: Iterable[str] = set(),
-        remove_empty_directories: bool = False,
-        quiet: bool = False,
-        verbose: bool = False,
-    ) -> None:
-        self.directories = set(map(lambda p: Path(p).resolve(), directories))
-        self.patterns = set(patterns)
-        self.ignore = set(ignore)
-        self.remove_empty_directories = remove_empty_directories
-        self.quiet = quiet
-        self.verbose = verbose
+    directories: Set[Path] = attr.ib(default={CWD}, converter=_set_of_paths)
+    patterns: Set[str] = attr.ib(default=set(), converter=set)
+    ignore: Set[str] = attr.ib(default=set(), converter=set)
+    remove_empty_directories: bool = attr.ib(default=False)
+    quiet: bool = attr.ib(default=False)
+    verbose: bool = attr.ib(default=False)
 
 
-def parse_pyproject() -> dict:
-    pyproject = toml.load(CWD / "pyproject.toml")
-    section: dict = pyproject["tool"]["dustpan"]
-
-    return {
-        "patterns": section.get("patterns", []),
-        "ignore": section.get("ignore", []),
-        "remove_empty_directories": section.get("remove_empty_directories", False),
-    }
+def parse_pyproject_toml() -> dict:
+    pyproject_toml = toml.load(CWD / "pyproject.toml")
+    config: dict = pyproject_toml.get("tool", {}).get("dustpan", {})
+    return {k.replace("-", "_"): v for k, v in config.items()}
 
 
 def parse_arguments() -> dict:
@@ -60,7 +45,7 @@ def parse_arguments() -> dict:
     verbosity.add_argument("-v", "--verbose", action="store_true", help="Be more verbose")
 
     args = parser.parse_args()
-    return {k: v for k, v in vars(args).items() if v is not None}
+    return {k: v for k, v in vars(args).items() if bool(v)}
 
 
-CONFIG = Configuration(**{**parse_pyproject(), **parse_arguments()})  # FIXME: Fix config overwriting
+CONFIG = Configuration(**{**parse_pyproject_toml(), **parse_arguments()})
