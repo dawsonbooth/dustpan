@@ -2,8 +2,7 @@ import shutil
 from pathlib import Path
 from typing import Iterable, Set
 
-# TODO: Refine these
-DEFAULT_INCLUDE = {"__pycache__", "*.pyc", ".mypy_cache", ".pytest_cache"}
+DEFAULT_INCLUDE = {"__pycache__", "*.pyc", "*.pyo"}
 DEFAULT_EXCLUDE = {".venv/**/*"}
 
 
