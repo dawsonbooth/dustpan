@@ -9,7 +9,7 @@
 
 ## Description
 
-This is a short or long textual description of the package.
+Clean up your workspace by removing extraneous files and directories.
 
 ## Installation
 
@@ -21,32 +21,34 @@ python -m pip install dustpan
 
 ## Usage
 
-The following is an example usage of the package:
-
-```python
-from foo import bar
-
-print("Ok here we go")
-
-try:
-    bar()
-except:
-    print("Ah good effort")
-```
-
-Some info about calling the program.
+This is a command-line program, and can be executed as follows:
 
 ```bash
-python whatever.py > out.txt
+dustpan [-h] [-p PATTERNS [PATTERNS ...]] [-i IGNORE [IGNORE ...]] [--remove-empty-directories] [-q | -v | -vv] directories [directories ...]
 ```
 
-Then some output (console or file whatever)
+Positional arguments:
 
 ```txt
-Output here I guess
+  directories           Root directories to search
 ```
 
-Feel free to [check out the docs](https://dawsonbooth.github.io/dustpan/) for more information.
+Optional arguments:
+
+```txt
+  -h, --help            show this help message and exit
+  -p PATTERNS [PATTERNS ...], --patterns PATTERNS [PATTERNS ...]
+                        Additional path patterns to queue for removal
+  -i IGNORE [IGNORE ...], --ignore IGNORE [IGNORE ...]
+                        Path patterns to exclude from removal
+  --remove-empty-directories
+                        Remove all childless directories
+  -q, --quiet           Be quiet
+  -v, --verbose         Be more verbose
+  -vv, --very-verbose   Be very verbose
+```
+
+Feel free to [check out the docs](https://dawsonbooth.github.io/dustpan/) for more information on how to use this package.
 
 ## License
 
