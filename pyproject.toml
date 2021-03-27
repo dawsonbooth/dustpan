@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dustpan"
-version = "0.2.0"
+version = "0.3.0"
 description = ""
 authors = ["Dawson Booth <pypi@dawsonbooth.com>"]
 license = "MIT"
@@ -40,7 +40,6 @@ pytest = "^6.2.1"
 rope = "^0.18.0"
 
 [tool.dustpan]
-include = ["test.txt"]
 remove-empty-directories = true
 
 [tool.isort]
