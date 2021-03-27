@@ -90,11 +90,11 @@ def test(c):
 )
 def docs(c, serve=False, deploy=False):
     """Build documentation"""
-    _run(c, "portray as_html")
+    _run(c, "portray as_html .")
     if deploy:
         _run(c, "ghp-import site -pf")
     if serve:
-        _run(c, "portray server")
+        _run(c, "portray server .")
 
 
 @task
