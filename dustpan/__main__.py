@@ -6,14 +6,14 @@ from typing import Iterable, Set
 from colorama import Style
 
 from . import DEFAULT_EXCLUDE, DEFAULT_INCLUDE, remove, search
-from .config import CONFIG
+from .config import CONFIG, Verbosity
 
 
-def output(message: str, *args, verbose: bool = False, **kwargs):
-    if not verbose:
+def output(message: str, *args, verbosity: Verbosity = Verbosity.NORMAL, **kwargs):
+    if verbosity <= CONFIG.verbosity:
+        if verbosity >= Verbosity.VERBOSE:
+            message = f"{Style.DIM}{message}{Style.RESET_ALL}"
         print(message, *args, **kwargs)
-    elif verbose and CONFIG.verbose:
-        print(f"{Style.DIM}{message}{Style.RESET_ALL}", *args, **kwargs)
 
 
 def paths_to_remove(patterns: Iterable[str], ignore: Iterable[str]) -> Set[Path]:
@@ -21,12 +21,12 @@ def paths_to_remove(patterns: Iterable[str], ignore: Iterable[str]) -> Set[Path]
 
     for path in search(*CONFIG.directories, patterns=patterns, ignore=[]):
         paths.add(path)
-        output(f"Found: {path}", verbose=True)
+        output(f"Found {path}", verbosity=Verbosity.VERY_VERBOSE)
 
     for path in search(*CONFIG.directories, patterns=ignore, ignore=[]):
         if path in paths:
             paths.remove(path)
-        output(f"Ignored: {path}", verbose=True)
+        output(f"Ignored {path}", verbosity=Verbosity.VERY_VERBOSE)
 
     return paths
 
@@ -38,7 +38,7 @@ def empty_directories() -> Set[Path]:
             with os.scandir(path) as scan:
                 if next(scan, None) is None:
                     paths.add(path)
-                    output(f"Found: {path}", verbose=True)
+                    output(f"Found {path}", verbosity=Verbosity.VERY_VERBOSE)
     return paths
 
 
@@ -46,32 +46,19 @@ def remove_paths(paths: Iterable[Path]) -> int:
     paths = set(paths)
     for path in paths:
         remove(path)
-        output(f"Removing: {path}", verbose=True)
+        output(f"Removing {path}", verbosity=Verbosity.VERBOSE)
     return len(paths)
 
 
 def main() -> int:
-    num_removed = 0
-
-    paths = set()
-
-    output("Default search...", verbose=True)
-    paths |= paths_to_remove(DEFAULT_INCLUDE, DEFAULT_EXCLUDE)
-
-    output("Custom search...", verbose=True)
-    paths |= paths_to_remove(CONFIG.include, CONFIG.exclude)
-
-    output("Removing paths...", verbose=True)
-    num_removed += remove_paths(paths)
+    paths = paths_to_remove(DEFAULT_INCLUDE, DEFAULT_EXCLUDE) | paths_to_remove(CONFIG.include, CONFIG.exclude)
+    num_removed = remove_paths(paths)
 
     if CONFIG.remove_empty_directories:
-        output("Empty directory search...", verbose=True)
         empty = empty_directories()
-
-        output("Empty directory search...", verbose=True)
         num_removed += remove_paths(empty)
 
-    output(f"{num_removed} paths removed")
+    output(f"{num_removed} paths removed.")
 
     return 0
 
