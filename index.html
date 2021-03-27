@@ -280,10 +280,48 @@
           
 
 
-  <li class="md-nav__item">
-    <a href="reference/dustpan/" title="Dustpan" class="md-nav__link">
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2-1" type="checkbox" id="nav-2-1">
+    
+    <label class="md-nav__link" for="nav-2-1">
       Dustpan
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Dustpan" data-md-level="2">
+      <label class="md-nav__title" for="nav-2-1">
+        <span class="md-nav__icon md-icon"></span>
+        Dustpan
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="reference/dustpan/config/" title="Config" class="md-nav__link">
+      Config
     </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="reference/dustpan/" title="Index" class="md-nav__link">
+      Index
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
   </li>
 
         
@@ -371,40 +409,44 @@
 <a href="https://pypi.org/pypi/dustpan/"><img alt="format" src="https://img.shields.io/pypi/format/dustpan.svg?style=flat" /></a>
 <a href="https://github.com/dawsonbooth/dustpan/blob/master/LICENSE"><img alt="license" src="https://img.shields.io/pypi/l/dustpan.svg?style=flat" /></a></p>
 <h2 id="description">Description<a class="headerlink" href="#description" title="Permanent link">&para;</a></h2>
-<p>This is a short or long textual description of the package.</p>
+<p>Clean up your workspace by removing extraneous files and directories.</p>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
 <p>With <a href="https://www.python.org/downloads/">Python</a> installed, simply run the following command to add the package to your project.</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>python -m pip install dustpan
 </code></pre></div>
 </td></tr></table>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
-<p>The following is an example usage of the package:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span>
-<span class="normal">5</span>
-<span class="normal">6</span>
-<span class="normal">7</span>
-<span class="normal">8</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">foo</span> <span class="kn">import</span> <span class="n">bar</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ok here we go&quot;</span><span class="p">)</span>
-
-<span class="k">try</span><span class="p">:</span>
-    <span class="n">bar</span><span class="p">()</span>
-<span class="k">except</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ah good effort&quot;</span><span class="p">)</span>
+<p>This is a command-line program, and can be executed as follows:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>dustpan <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-p PATTERNS <span class="o">[</span>PATTERNS ...<span class="o">]]</span> <span class="o">[</span>-i IGNORE <span class="o">[</span>IGNORE ...<span class="o">]]</span> <span class="o">[</span>--remove-empty-directories<span class="o">]</span> <span class="o">[</span>-q <span class="p">|</span> -v <span class="p">|</span> -vv<span class="o">]</span> directories <span class="o">[</span>directories ...<span class="o">]</span>
 </code></pre></div>
 </td></tr></table>
-<p>Some info about calling the program.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>python whatever.py &gt; out.txt
+<p>Positional arguments:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>  directories           Root directories to search
 </code></pre></div>
 </td></tr></table>
-<p>Then some output (console or file whatever)</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>Output here I guess
+<p>Optional arguments:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>  -h, --help            show this help message and exit
+  -p PATTERNS [PATTERNS ...], --patterns PATTERNS [PATTERNS ...]
+                        Additional path patterns to queue for removal
+  -i IGNORE [IGNORE ...], --ignore IGNORE [IGNORE ...]
+                        Path patterns to exclude from removal
+  --remove-empty-directories
+                        Remove all childless directories
+  -q, --quiet           Be quiet
+  -v, --verbose         Be more verbose
+  -vv, --very-verbose   Be very verbose
 </code></pre></div>
 </td></tr></table>
-<p>Feel free to <a href="https://dawsonbooth.github.io/dustpan/">check out the docs</a> for more information.</p>
+<p>Feel free to <a href="https://dawsonbooth.github.io/dustpan/">check out the docs</a> for more information on how to use this package.</p>
 <h2 id="license">License<a class="headerlink" href="#license" title="Permanent link">&para;</a></h2>
 <p>This software is released under the terms of <a href="LICENSE">MIT license</a>.</p>
                 
@@ -426,13 +468,13 @@
       <nav class="md-footer-nav__inner md-grid">
         
         
-          <a href="reference/dustpan/" title="Dustpan" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="reference/dustpan/config/" title="Config" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Dustpan
+                Config
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
