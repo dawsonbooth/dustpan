@@ -27,7 +27,7 @@ jobs:
         run: poetry install
       - name: Lint
         run: |
-          poetry run mypy --install-types
+          poetry run mypy --install-types --non-interactive .
           poetry run inv lint
       - name: Test
         run: poetry run inv test
