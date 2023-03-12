@@ -28,7 +28,7 @@ def clean_docs(c):
 @task
 def clean_python(c):
     """Clean up python file artifacts"""
-    _run(c, f"dustpan {ROOT}")
+    _run(c, f"python -m dustpan {ROOT}")
 
 
 @task
@@ -51,19 +51,8 @@ def clean(c):
 @task(name="format", help={"check": "Checks if source is formatted without applying changes"})
 def format_(c, check=False):
     """Format code"""
-    autoflake_args = ["-r", "--remove-all-unused-imports"]
-    isort_args = []
-    black_args = ["--quiet"]
-
-    if check:
-        isort_args += ["--check-only", "--diff"]
-        black_args += ["--diff", "--check"]
-    else:
-        autoflake_args += ["-i"]
-
-    _run(c, f"autoflake {ROOT}", *autoflake_args)
-    _run(c, f"isort {ROOT}", *isort_args)
-    _run(c, f"black {ROOT}", *black_args)
+    command = "check" if check else "format"
+    _run(c, f"ufmt {command} {ROOT}")
 
 
 @task
