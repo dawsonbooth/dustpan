@@ -26,7 +26,9 @@ jobs:
       - name: Install Dependencies
         run: poetry install
       - name: Lint
-        run: poetry run inv lint
+        run: |
+          poetry run mypy --install-types
+          poetry run inv lint
       - name: Test
         run: poetry run inv test
       - name: Build
